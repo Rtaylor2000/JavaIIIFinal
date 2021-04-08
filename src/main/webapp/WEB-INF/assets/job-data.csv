@@ -1,0 +1,11 @@
+id,active,dateCreated,title,city,state,fullTime,department,experience,wageCategory,salary
+8715,TRUE,2021-01-27,Integration Developer,Coralville,IA,FALSE,Data Management,Experienced,Salaried,50000
+8805,TRUE,2021-03-24,Manager Data Technologies,Coralville,IA,TRUE,Data Management ,Manager/Supervisor,Salaried,75000
+8790,TRUE,2021-03-06,Associate Coder,Portland,OR,FALSE,Project Management,Mid Level,Hourly,20
+8787,TRUE,2021-03-03,"<script>alert(""Escape Me"")</script>Analyst Financial Planning and Analysis",Coralville,IA,TRUE,Finance,Experienced,Hourly,25
+8720,TRUE,2021-02-12,Reimbursement Analyst,Anaheim,CA,TRUE,Insurance,Experienced,Salaried,5000
+8750,TRUE,2021-02-26,Configuration Management Analyst,Coralville,IA,FALSE,Information Technology,Mid Level,Salaried,42500
+8812,TRUE,2021-03-29,Billing Representative,Anaheim,CA,TRUE,Sales,Entry Level,Hourly,15
+8809,TRUE,2021-03-26,Client Delivery Manager,Coralville,IA,TRUE,Project Management,Manager/Supervisor,Salaried,75000
+8811,TRUE,2021-03-28,Analyst Revenue Cycle,Portland,OR,TRUE,Information Technology,Experienced,Salaried,50000
+8721,FALSE,2021-02-12,Manager Coding Audit,Coralville,IA,TRUE,Sales,Manager/Supervisor,Salaried,75000
