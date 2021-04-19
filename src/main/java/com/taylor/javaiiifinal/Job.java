@@ -7,6 +7,7 @@ package com.taylor.javaiiifinal;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -73,6 +74,10 @@ public class Job implements Serializable, Comparable<Job>{
 
     public LocalDate getDateCreated() {
         return dateCreated;
+    }
+    
+    public Date getNewDateCreated() {
+        return java.sql.Date.valueOf(dateCreated);
     }
 
     public void setDateCreated(LocalDate dateCreated) {
@@ -143,15 +148,13 @@ public class Job implements Serializable, Comparable<Job>{
         this.salary = salary;
     }
     
-    
-    
     @Override
     public int compareTo(Job other) {
-        int last = dateCreated.compareTo(other.dateCreated);
-        if (last == 0) {
-            return dateCreated.compareTo(other.dateCreated);
+        int result = dateCreated.compareTo(other.dateCreated);
+        if (result == 0) {
+            return title.compareTo(other.title);
         }
-        return last;
+        return result;
     }
             
 }
