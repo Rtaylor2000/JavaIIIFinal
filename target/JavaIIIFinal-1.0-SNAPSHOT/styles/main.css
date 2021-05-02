@@ -56,13 +56,24 @@ body{
     background-color: lightgreen;
     color: black; 
     border: 2px solid black;
-    width: 90%;
+    width: 100%;
     text-align: center;
     padding: 5px;
+    margin: 0px auto;
 }
 
 .job p {
     margin: 5px 0 0;
+}
+
+.error{
+    color: red;
+    font-weight: bolder;
+}
+
+.nonFloatPad{
+    float: none;
+    padding: 2%;
 }
 
 @media only screen and (min-width: 1000px) {
@@ -75,5 +86,9 @@ body{
     }
     .description{
         margin-right: 1%;
+    }
+    
+    .job.fullwidth{
+        width: 95%;
     }
 }

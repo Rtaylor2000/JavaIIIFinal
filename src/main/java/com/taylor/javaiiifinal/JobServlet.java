@@ -56,7 +56,7 @@ public class JobServlet extends HttpServlet {
                     line = in.nextLine();
                     fields = line.split(",");
                     id = Integer.parseInt(fields[0]);
-                    active = Boolean.getBoolean(fields[1]);
+                    active = Boolean.parseBoolean(fields[1].toLowerCase());
                     dateCreated = LocalDate.parse(fields[2]);
                     title = fields[3];
                     city = fields[4];
@@ -66,9 +66,11 @@ public class JobServlet extends HttpServlet {
                     experience = fields[8];
                     wageCategory = fields[9];
                     salary = Double.parseDouble(fields[10]);
-                    jobs.add(new Job(id, active, dateCreated, title, city,
-                            state, fullTime, department, experience,
-                            wageCategory, salary));
+                    if(active){
+                        jobs.add(new Job(id, active, dateCreated, title, city,
+                                state, fullTime, department, experience,
+                                wageCategory, salary));
+                    }
                 }
             } catch(FileNotFoundException fnfe){
                 response.setContentType("text/html;charset=UTF-8");

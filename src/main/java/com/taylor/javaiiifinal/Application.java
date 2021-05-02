@@ -46,13 +46,13 @@ public class Application implements Serializable, Comparable<Application>{
         this.jobId = 0;
         this.dateTimeSubmitted = Instant.now();
         this.active = true;
-        this.firstNameError = "none";
-        this.lastNameError = "none";
-        this.emailError = "none";
-        this.phoneError = "none";
-        this.resumeError = "none";
-        this.salaryError = "none";
-        this.startDateError = "none";
+        this.firstNameError = "";
+        this.lastNameError = "";
+        this.emailError = "";
+        this.phoneError = "";
+        this.resumeError = "";
+        this.salaryError = "";
+        this.startDateError = "";
     }
     
     public Application(String firstName, String lastName, String email, 
@@ -234,8 +234,6 @@ public class Application implements Serializable, Comparable<Application>{
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
-    
-    //a toString method to display the job title, firstName, lastName, and email
     
     @Override
     public String toString(){
