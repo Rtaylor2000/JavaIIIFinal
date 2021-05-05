@@ -22,7 +22,7 @@
             </c:otherwise>
         </c:choose>
         <h2>Login</h2>
-        <div class="job nonFloatPad">
+        <div class="job" style="float: none;">
             <form method="POST" action="<c:url value="/login" />">
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" /><br><br>

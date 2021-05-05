@@ -8,6 +8,7 @@ package com.taylor.javaiiifinal;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -133,6 +134,10 @@ public class Application implements Serializable, Comparable<Application>{
 
     public LocalDate getEarliestStartDate() {
         return earliestStartDate;
+    }
+    
+    public Date getNewStartDate() {
+        return java.sql.Date.valueOf(earliestStartDate);
     }
 
     public void setEarliestStartDate(LocalDate earliestStartDate) {

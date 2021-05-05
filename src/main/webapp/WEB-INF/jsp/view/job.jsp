@@ -62,22 +62,33 @@
 
                     <label for="firstName">First Name</label><br>
                     <input type="text" name="firstName" id="firstName" 
-                           required/><br><br>
+                           required/><br>
+                    <p class="error">${FirstNameError}</p><br>
+                    
                     <label for="lastName">Last Name</label><br>
                     <input type="text" name="lastName" id="firstName" 
-                           required/><br><br>
+                           required/><br>
+                    <p class="error">${LastNameError}</p><br>
+                    
                     <label for="email">Email</label><br>
                     <input type="email" name="email" id="email" 
-                           required/><br><br>
+                           required/><br>
+                    <p class="error">${EmailError}</p><br>
+                    
                     <label for="phoneNumber">Phone Number</label><br>
                     <input type="text" name="phoneNumber" id="phoneNumber" 
                            required/><br>
                     <p class="error">${PhoneError}</p><br>
+                    
                     <label for="file1">Resume</label><br>
-                    <input type="file" name="file1" id="file1" required/><br><br>
+                    <input type="file" name="file1" id="file1" required/><br>
+                    <p class="error">${ResumeError}</p><br>
+                    
                     <label for="desiredSalary">Desired Salary</label><br>
                     <input type="number" name="desiredSalary" id="desiredSalary" 
-                           required min="1"/><br><br>
+                           required min="1"/><br>
+                    <p class="error">${SalaryError}</p><br>
+                    
                     <label for="earliestStartDate">Earliest Start Date</label><br>
                     <input type="date" name="earliestStartDate" 
                            id="earliestStartDate" required/><br>

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,32 +39,6 @@ public class ApplicationServlet extends HttpServlet {
 
     private volatile int APPLICATION_ID_SEQUENCE = 1;
     private Map<Integer, Application> applicationDatabase = new LinkedHashMap<>();
-    private static SortedSet<Application> applications;
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "list";
-        }
-        switch (action) {
-            case "create":
-                createAplication(request, response);
-                break;
-            case "list":
-            default:
-                listApplications(request, response);
-                break;
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -81,6 +56,26 @@ public class ApplicationServlet extends HttpServlet {
         if(session.getAttribute("username") == null) {
             response.sendRedirect("login");
             return;
+        }
+        
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "list";
+        }
+        switch (action) {
+            case "create":
+                createAplication(request, response);
+                break;
+            case "view":
+                viewApplication(request, response);
+                break;
+            case "download":
+                downloadAttachment(request, response);
+                break;
+            case "list":
+            default:
+                listApplications(request, response);
+                break;
         }
     }
 
@@ -103,6 +98,9 @@ public class ApplicationServlet extends HttpServlet {
         switch (action) {
             case "create":
                 createAplication(request, response);
+                break;
+            case "deactivate":
+                deactivateAplication(request, response);
                 break;
             case "list":
             default:
@@ -141,7 +139,13 @@ public class ApplicationServlet extends HttpServlet {
             newApplication.setEmailError("Email can't be emty!");
         }
         else{
-            newApplication.setEmail(email);
+            if(!email.contains("@")){
+                error = true;
+                newApplication.setEmailError("Please enter your email!");
+            }
+            else{
+                newApplication.setEmail(email);
+            }
         }
         
         String phone = request.getParameter("phoneNumber");
@@ -171,7 +175,6 @@ public class ApplicationServlet extends HttpServlet {
                         +listCharPhone.get(7)+""+listCharPhone.get(8)+""
                         +listCharPhone.get(9);
                 String formated = numberPhone.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
-//                System.out.println("formated: "+formated);
                 newApplication.setPhone(formated);
             }
         }
@@ -189,7 +192,7 @@ public class ApplicationServlet extends HttpServlet {
         }
         
         String desiredSalary = request.getParameter("desiredSalary");
-        if(desiredSalary == null){
+        if(desiredSalary == null || desiredSalary.equals("")){
             error = true;
             newApplication.setSalaryError("Desired Salary can not be blank!");
         }
@@ -199,9 +202,9 @@ public class ApplicationServlet extends HttpServlet {
         }
         
         String earliestStartDate = request.getParameter("earliestStartDate");
-        if(earliestStartDate == null){
+        if(earliestStartDate == null || earliestStartDate.equals("")){
             error = true;
-            newApplication.setStartDateError("Earlies Start Date can not be blank");
+            newApplication.setStartDateError("Earliest Start Date can not be blank");
         }
         else{
             LocalDate StartDate = LocalDate.parse(earliestStartDate);
@@ -229,6 +232,11 @@ public class ApplicationServlet extends HttpServlet {
             errors = "Application Failed To Send.";
             request.setAttribute("PhoneError", newApplication.getPhoneError());
             request.setAttribute("DateError", newApplication.getStartDateError());
+            request.setAttribute("FirstNameError", newApplication.getFirstNameError());
+            request.setAttribute("EmailError", newApplication.getEmailError());
+            request.setAttribute("LastNameError", newApplication.getLastNameError());
+            request.setAttribute("ResumeError", newApplication.getResumeError());
+            request.setAttribute("SalaryError", newApplication.getSalaryError());
         }
         else{
             errors = "Application Sent.";
@@ -279,57 +287,8 @@ public class ApplicationServlet extends HttpServlet {
     }
     
     private void listApplications(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        for (Map.Entry<Integer, Application> application : applicationDatabase.entrySet()){
-            applications.add(application.getValue());
-        }
-        if(request.getParameter("id") != null){
-            int id = Integer.parseInt(request.getParameter("id"));
-            Application application = new Application();
-            
-            for (Application var : applications){ 
-                if(id == var.getId()){
-                    application = var;
-                }
-            }
-            
-//            for (Map.Entry<Integer, Application> var : applicationDatabase.entrySet()){ 
-//                if(id == var.getKey()){
-//                    application = var.getValue();
-//                }
-//            }
-
-            request.setAttribute("application", application);
-            request.getRequestDispatcher("/WEB-INF/jsp/view/job.jsp").forward(request, response);
-        }
-        int page = 1;
-        int jobsPerPage = 4;
-        int begin = 0;
-        int end = 0;
-        int maxPages = applications.size() / jobsPerPage;
-        if(applications.size() % jobsPerPage != 0) {
-            maxPages++;
-        }
-        String pageStr = request.getParameter("page");
-        if(pageStr != null && !pageStr.equals("")) {
-            try {
-                page = Integer.parseInt(pageStr);
-                if(page < 1){
-                    page = 1;
-                } else if(page > maxPages) {
-                    page = maxPages;
-                }
-            } catch(NumberFormatException e) {
-                page = 1;
-            }
-        }
-        begin = (page - 1) * jobsPerPage;
-        end = begin + jobsPerPage - 1;
-        request.setAttribute("applications", applications);
-        request.setAttribute("begin", begin);
-        request.setAttribute("end", end);
-        request.setAttribute("maxPages", maxPages);
-        request.setAttribute("currentPage", page);
-        request.getRequestDispatcher("/WEB-INF/jsp/view/jobList.jsp").forward(request, response);
+        request.setAttribute("applicationDatabase", this.applicationDatabase);
+        request.getRequestDispatcher("/WEB-INF/jsp/view/applicationList.jsp").forward(request, response);
     }
 
     /**
@@ -342,4 +301,67 @@ public class ApplicationServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void downloadAttachment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idString = request.getParameter("applicationId");
+        Application application = getApplication(idString);
+        String name = request.getParameter("attachment");
+        if (application == null || name == null) {
+            response.sendRedirect("applications");
+            return;
+        }
+
+        Attachment attachment = application.getResumeUpload();
+        if (attachment == null) {
+            response.sendRedirect("applications?action=view&applicationId=" + idString);
+            return;
+        }
+
+        response.setHeader("Content-Disposition", "attachment; filename=" + attachment.getName());
+        response.setContentType("application/octet-stream");
+
+        try (ServletOutputStream stream = response.getOutputStream()) {
+            stream.write(attachment.getContents());
+        }
+    }
+    
+    private Application getApplication(String idString) throws ServletException, IOException {
+        if (idString == null || idString.length() == 0) {
+            return null;
+        }
+
+        try {
+            Application application = applicationDatabase.get(Integer.parseInt(idString));
+            if (application == null) {
+                return null;
+            }
+            return application;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    private void viewApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idString = request.getParameter("applicationId");
+        Application application = getApplication(idString);
+        if (application == null) {
+            return;
+        }
+
+        request.setAttribute("applicationId", idString);
+        HttpSession session = request.getSession();
+        request.setAttribute("application", application);
+
+        request.getRequestDispatcher("/WEB-INF/jsp/view/application.jsp").forward(request, response);
+    }
+    
+    private void deactivateAplication(HttpServletRequest request, 
+            HttpServletResponse response) throws ServletException, IOException {
+        String idString = request.getParameter("id");
+        Application application = getApplication(idString);
+        application.setActive(false);
+        applicationDatabase.put(Integer.parseInt(idString), application);
+        
+        listApplications(request, response);
+        
+    }
 }

@@ -23,24 +23,24 @@
                 <a href="<c:url value="/login" />">Login</a>
             </c:otherwise>
         </c:choose>
+                
         <h2>Applications!</h2>
-        <div class="numberNav">
-            <c:forEach var="i" begin="1" end="${maxPages}">
-                <a <c:if test="${currentPage == i}">class="active"</c:if> href="<c:url value="/jobs"><c:param name="page" value="${i}" /></c:url>">${i}</a>
+        <c:if test="${fn:length(applicationDatabase) > 0}">
+            <c:forEach items="${applicationDatabase}" var="entry">
+                <c:if test="${entry.value.active}">
+                    <div class="job fullwidth">
+                        Application ${entry.key}<br /> <a href="<c:url value="/applications">
+                            <c:param name="action" value="view" />
+                            <c:param name="applicationId" value="${entry.key}" />
+                        </c:url>"><c:out value="${entry.value.jobTitle}" /></a>
+                        <p>
+                            <c:out value="${entry.value.firstName}" />
+                            &nbsp; <c:out value="${entry.value.lastName}" />
+                            ,&nbsp; <c:out value="${entry.value.email}" />
+                        </p>
+                    </div>
+                </c:if>
             </c:forEach>
-        </div>
-        <c:forEach items="${aplications}" var="aplications">
-            <div class="job fullwidth">
-                <p>
-                    <a href="
-                       <c:url value="/application">
-                           <c:param name="id" value="${aplications.id}" />
-                       </c:url>"><c:out value="${aplications.jobTitle}" />
-                    </a>&nbsp;
-                </p>
-                <p><c:out value="${aplications.firstName}" />, <c:out value="${aplications.lastName}" /></p>
-                <p><c:out value="${aplications.email}" /></p>
-            </div>
-        </c:forEach>
+        </c:if>
     </body>
 </html>
