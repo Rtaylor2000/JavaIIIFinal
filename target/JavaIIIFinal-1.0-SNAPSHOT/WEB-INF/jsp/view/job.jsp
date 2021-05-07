@@ -48,51 +48,52 @@
             <div class="job application">
                 <p class="error">${Error}</p>
                 <form method="POST" action="<c:url value="/applications" />" enctype="multipart/form-data">
-                    <input type="hidden" name="jobId" value="${job.id}" />
-                    <input type="hidden" name="jobTitle" value="${job.title}" />
+                    <input type="hidden" name="jobId" value="${fn:escapeXml(job.id)}" />
+                    <input type="hidden" name="jobTitle" value="${fn:escapeXml(job.title)}" />
                     
-                    <input type="hidden" name="city" value="${job.city}"/>
-                    <input type="hidden" name="state" value="${job.state}"/>
-                    <input type="hidden" name="fullTime" value="${job.fullTime}"/>
-                    <input type="hidden" name="department" value="${job.department}"/>
-                    <input type="hidden" name="experience" value="${job.experience}"/>
-                    <input type="hidden" name="salary" value="${job.salary}"/>
+                    <input type="hidden" name="city" value="${fn:escapeXml(job.city)}"/>
+                    <input type="hidden" name="state" value="${fn:escapeXml(job.state)}"/>
+                    <input type="hidden" name="fullTime" value="${fn:escapeXml(job.fullTime)}"/>
+                    <input type="hidden" name="department" value="${fn:escapeXml(job.department)}"/>
+                    <input type="hidden" name="experience" value="${fn:escapeXml(job.experience)}"/>
+                    <input type="hidden" name="salary" value="${fn:escapeXml(job.salary)}"/>
                     
                     <input type="hidden" name="action" value="create" />
 
                     <label for="firstName">First Name</label><br>
                     <input type="text" name="firstName" id="firstName" 
-                           required/><br>
-                    <p class="error">${FirstNameError}</p><br>
+                           value="${fn:escapeXml(application.firstName)}" required/><br>
+                    <p class="error">${(application.firstNameError)}</p><br>
                     
                     <label for="lastName">Last Name</label><br>
                     <input type="text" name="lastName" id="firstName" 
-                           required/><br>
-                    <p class="error">${LastNameError}</p><br>
+                           value="${fn:escapeXml(application.lastName)}" required/><br>
+                    <p class="error">${application.lastNameError}</p><br>
                     
                     <label for="email">Email</label><br>
                     <input type="email" name="email" id="email" 
-                           required/><br>
-                    <p class="error">${EmailError}</p><br>
+                           value="${fn:escapeXml(application.email)}" required/><br>
+                    <p class="error">${application.emailError}</p><br>
                     
                     <label for="phoneNumber">Phone Number</label><br>
                     <input type="text" name="phoneNumber" id="phoneNumber" 
-                           required/><br>
-                    <p class="error">${PhoneError}</p><br>
+                           value="${fn:escapeXml(application.phone)}" required/><br>
+                    <p class="error">${application.phoneError}</p><br>
                     
                     <label for="file1">Resume</label><br>
-                    <input type="file" name="file1" id="file1" required/><br>
-                    <p class="error">${ResumeError}</p><br>
+                    <input type="file" name="file1" id="file1" 
+                           value="${fn:escapeXml(application.resumeUpload)}" required/><br>
+                    <p class="error">${application.resumeError}</p><br>
                     
                     <label for="desiredSalary">Desired Salary</label><br>
                     <input type="number" name="desiredSalary" id="desiredSalary" 
-                           required min="1"/><br>
-                    <p class="error">${SalaryError}</p><br>
+                           value="${fn:escapeXml(application.desiredSalary)}" required min="1"/><br>
+                    <p class="error">${application.salaryError}</p><br>
                     
                     <label for="earliestStartDate">Earliest Start Date</label><br>
                     <input type="date" name="earliestStartDate" 
-                           id="earliestStartDate" required/><br>
-                    <p class="error">${DateError}</p><br>
+                           value="${fn:escapeXml(application.earliestStartDate)}" id="earliestStartDate" required/><br>
+                    <p class="error">${application.startDateError}</p><br>
                     <input type="submit" value="Submit"/>
                 </form>
             </div>

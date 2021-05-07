@@ -36,11 +36,11 @@ public class Application implements Serializable, Comparable<Application>{
     private String jobTitle;
 
     public Application() {
-        this.jobTitle = "none";
-        this.firstName = "none";
-        this.lastName = "none";
-        this.email = "none";
-        this.phone = "none";
+        this.jobTitle = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.email = "";
+        this.phone = "";
         this.desiredSalary = 0.00;
         this.earliestStartDate = LocalDate.now();
         this.id = 0;

@@ -159,13 +159,11 @@ public class ApplicationServlet extends HttpServlet {
             for(int i = 0; i < charPhone.length; i++) {
                 if(Character.isDigit(charPhone[i])){
                     listCharPhone.add(charPhone[i]);
-//                    System.out.println("added: "+charPhone[i]);
                 }
             }
             if(listCharPhone.size() != 10){
                 error = true;
                 newApplication.setPhoneError("A phone number has ten numbers!");
-                System.out.println("error: "+newApplication.getPhoneError());
             }
             else{
                 String numberPhone = listCharPhone.get(0)+""
@@ -230,13 +228,7 @@ public class ApplicationServlet extends HttpServlet {
         String errors;
         if(error){
             errors = "Application Failed To Send.";
-            request.setAttribute("PhoneError", newApplication.getPhoneError());
-            request.setAttribute("DateError", newApplication.getStartDateError());
-            request.setAttribute("FirstNameError", newApplication.getFirstNameError());
-            request.setAttribute("EmailError", newApplication.getEmailError());
-            request.setAttribute("LastNameError", newApplication.getLastNameError());
-            request.setAttribute("ResumeError", newApplication.getResumeError());
-            request.setAttribute("SalaryError", newApplication.getSalaryError());
+            request.setAttribute("application", newApplication);
         }
         else{
             errors = "Application Sent.";

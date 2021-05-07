@@ -32,11 +32,11 @@
                         Application ${entry.key}<br /> <a href="<c:url value="/applications">
                             <c:param name="action" value="view" />
                             <c:param name="applicationId" value="${entry.key}" />
-                        </c:url>"><c:out value="${entry.value.jobTitle}" /></a>
+                        </c:url>"><c:out value="${fn:escapeXml(entry.value.jobTitle)}" /></a>
                         <p>
-                            <c:out value="${entry.value.firstName}" />
-                            &nbsp; <c:out value="${entry.value.lastName}" />
-                            ,&nbsp; <c:out value="${entry.value.email}" />
+                            <c:out value="${fn:escapeXml(entry.value.firstName)}" />
+                            &nbsp; <c:out value="${fn:escapeXml(entry.value.lastName)}" />
+                            ,&nbsp; <c:out value="${fn:escapeXml(entry.value.email)}" />
                         </p>
                     </div>
                 </c:if>
